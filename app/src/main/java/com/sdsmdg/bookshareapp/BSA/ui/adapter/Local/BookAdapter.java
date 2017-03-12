@@ -47,10 +47,8 @@ import retrofit2.Response;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
-    //array for selected
-    String[] arr_id;
-
     private static final String TAG = BookAdapter.class.getSimpleName();
+    private int ctr=0;
 
     private static final int PENDING_REMOVAL_TIMEOUT = 1500;
     Book tempValues = null;
@@ -140,8 +138,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
                 //This line activates the contextual action bar
-                mActionMode = activity.startActionMode(mActionModeCallback);
+                //mActionMode = activity.startActionMode(mActionModeCallback);
 
 
                 //selected.put(position, true);
@@ -151,6 +150,20 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 // additional
 
                 rbook.setSelected(!rbook.isSelected());
+
+                if(rbook.isSelected())
+                    ctr++;
+                else {
+                    ctr--;
+                    if(ctr==0)
+                    {
+                        mActionMode.finish();
+                    }
+                }
+
+                if(ctr>0)
+                    mActionMode = activity.startActionMode(mActionModeCallback);
+
 
                 //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
 
