@@ -31,6 +31,7 @@ import com.sdsmdg.bookshareapp.BSA.R;
 import com.sdsmdg.bookshareapp.BSA.api.NetworkingFactory;
 import com.sdsmdg.bookshareapp.BSA.api.UsersAPI;
 import com.sdsmdg.bookshareapp.BSA.api.models.LocalBooks.Book;
+import com.sdsmdg.bookshareapp.BSA.api.models.LocalBooks.BookList;
 import com.sdsmdg.bookshareapp.BSA.api.models.LocalBooks.RemoveBook;
 import com.sdsmdg.bookshareapp.BSA.api.models.VerifyToken.Detail;
 import com.sdsmdg.bookshareapp.BSA.ui.MyProfile;
@@ -45,6 +46,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
+
+    //array for selected
+    String[] arr_id;
 
     private static final String TAG = BookAdapter.class.getSimpleName();
 
@@ -103,9 +107,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     //This function is used to delete the selected items
     public void deleteSelectedItem() {
         for (int i = 0; i < bookList.size(); i++) {
+            /*
             if (selected.get(i)) {
                 remove(i);
             }
+            */
+
+            Book book = bookList.get(i);
+            if(book.isSelected())
+              remove(i);
+
         }
     }
 
