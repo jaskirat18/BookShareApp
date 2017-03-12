@@ -122,6 +122,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
         final ViewHolder viewHolder = holder;
         final Book rbook = bookList.get(position);
 
@@ -130,15 +131,34 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             public boolean onLongClick(View v) {
                 //This line activates the contextual action bar
                 mActionMode = activity.startActionMode(mActionModeCallback);
-                selected.put(position, true);
-                viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
+
+
+                //selected.put(position, true);
+
+                selected.put(position, !rbook.isSelected());
+
+                // additional
+
+                rbook.setSelected(!rbook.isSelected());
+
+                //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
+
+                //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(rbook.isSelected() ? R.color.delete_gray: R.color.White));
+
+                viewHolder.itemView.setBackgroundColor(rbook.isSelected() ? Color.LTGRAY : Color.WHITE);
+
                 return false;
             }
         });
 
+
         if (itemsPendingRemoval.contains(rbook)) {
             // we need to show the "undo" state of the row
-            viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete2));
+
+            //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete2));
+            viewHolder.itemView.setBackgroundColor(Color.MAGENTA);
+
+
             viewHolder.titleBook.setVisibility(View.INVISIBLE);
             viewHolder.authorBook.setText("Delete Book ?");
             viewHolder.ratingCount.setVisibility(View.INVISIBLE);
@@ -170,10 +190,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             viewHolder.ratingBook.setRating(tempValues.getRating());
             viewHolder.ratingCount.setText("(" + tempValues.getRatingsCount() + ")");
             viewHolder.itemView.setBackgroundColor(Color.WHITE);
+
             //if the book is selected, change it's color to holo blue light
-            if (selected.get(position)) {
-                viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
+            //if (selected.get(position)) {
+            //    viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
+            //}
+
+            if(rbook.isSelected()){
+                viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
             }
+
             viewHolder.titleBook.setVisibility(View.VISIBLE);
             viewHolder.authorBook.setVisibility(View.VISIBLE);
             viewHolder.ratingBook.setVisibility(View.VISIBLE);
@@ -182,6 +208,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             viewHolder.undoButton.setVisibility(View.GONE);
             viewHolder.undoButton.setOnClickListener(null);
         }
+
     }
 
     @Override

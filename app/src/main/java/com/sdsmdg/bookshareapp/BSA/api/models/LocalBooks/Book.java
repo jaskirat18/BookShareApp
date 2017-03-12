@@ -72,4 +72,22 @@ public class Book extends RealmObject {
     public List<UserInfo> getUserInfoList() {
         return userInfoList;
     }
+
+
+    //additional changes
+    private boolean isSelected;
+
+    public Book()
+    {
+        isSelected=false;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
 }

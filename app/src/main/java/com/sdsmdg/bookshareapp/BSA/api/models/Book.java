@@ -6,6 +6,22 @@ import org.simpleframework.xml.Root;
 @Root(name = "work", strict = false)
 public class Book {
 
+    //begin
+    /*
+    @Element(name = "select_value")
+    private boolean isSelected = false;
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+    */
+    //end
+
+
     @Element(name = "best_book")
     BookDetails bookDetails;
 
@@ -40,8 +56,5 @@ public class Book {
     public long getRatingCount() {
         return ratingCount;
     }
+
 }
-
-
-
-
