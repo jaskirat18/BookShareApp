@@ -106,25 +106,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     }
 
-    //This function is used to delete the selected items
-    public void deleteSelectedItem() {
-        for (int i = 0; i < bookList.size(); i++) {
-
-            /*
-            if (selected.get(i)) {
-                remove(i);
-            }
-            */
-
-            /*
-            Book book = bookList.get(i);
-            if(book.isSelected())
-              remove(i);
-            */
-
-        }
-    }
-
     //This method is called after the contextual action bar is disabled
     public void reset() {
         selected.clear();
@@ -276,6 +257,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
 
+
+    //This function is used to delete the selected items
+    public void deleteSelectedItem() {
+        for (int i = 0; i < bookList.size(); i++) {
+
+            /*
+            if (selected.get(i)) {
+                remove(i);
+            }
+            */
+
+            Book book = bookList.get(i);
+            if(book.isSelected())
+              remove(i);
+
+        }
+    }
+
+
     public void remove(int position) {
         Book rbook = bookList.get(position);
         removeBook(rbook.getId(), position);
@@ -312,11 +312,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             }
 
             @Override
-            public void onFailure(Call<Detail> call, Throwable t) {
+            public void onFailure(Call<Detail> call, Throwable t)
+            {
+                /*
+
                 itemsPendingRemoval.remove(bookList.get(position));
                 //This line will remove the undo button and show the book row completely
                 notifyItemChanged(position);
                 Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_SHORT).show();
+
+                */
             }
         });
     }
