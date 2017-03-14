@@ -109,15 +109,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     //This function is used to delete the selected items
     public void deleteSelectedItem() {
         for (int i = 0; i < bookList.size(); i++) {
+
             /*
             if (selected.get(i)) {
                 remove(i);
             }
             */
 
+            /*
             Book book = bookList.get(i);
             if(book.isSelected())
               remove(i);
+            */
 
         }
     }
@@ -145,7 +148,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
                 is_selection=true;
 
-                //selected.put(position, !rbook.isSelected());
+                selected.put(position, !rbook.isSelected());
                 rbook.setSelected(!rbook.isSelected());
 
                 if(rbook.isSelected())
