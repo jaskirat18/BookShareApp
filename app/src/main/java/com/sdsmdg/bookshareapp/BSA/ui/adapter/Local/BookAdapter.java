@@ -66,7 +66,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
      * // is undo on, you can turn it on from the toolbar menu
      * //this array stores whether the current book is selected or not
      */
-    SparseBooleanArray selected;
+    private SparseBooleanArray selected;
+
     //This activity reference is required to activate the contextual action bar
     Activity activity;
 
@@ -144,27 +145,31 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
                 is_selection=true;
 
-                selected.put(position, !rbook.isSelected());
+                //selected.put(position, !rbook.isSelected());
                 rbook.setSelected(!rbook.isSelected());
 
                 if(rbook.isSelected())
+                {
                     ctr++;
-                else {
+                    //This line activates the contextual action bar
+                    mActionMode = activity.startActionMode(mActionModeCallback);
+                    viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+                    return true;
+                }
+                else
+                {
                     ctr--;
+                    viewHolder.itemView.setBackgroundColor(Color.WHITE);
+
                     if(ctr==0)
                     {
-                        //is_selection=false;
+                        is_selection=false;
                         mActionMode.finish();
+                        return true;
                     }
                 }
 
-                if(ctr>0) {
-                    //This line activates the contextual action bar
-                    mActionMode = activity.startActionMode(mActionModeCallback);
-                }
-
-                viewHolder.itemView.setBackgroundColor(rbook.isSelected() ? Color.LTGRAY : Color.WHITE);
-                return false;
+                return true;
             }
         });
 
@@ -172,11 +177,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                /*
                 if(is_selection)
                     viewHolder.itemView.performLongClick();
-                */
-                
+
             }
         });
 
@@ -184,9 +187,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         if (itemsPendingRemoval.contains(rbook)) {
             // we need to show the "undo" state of the row
 
-            //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete2));
             viewHolder.itemView.setBackgroundColor(Color.MAGENTA);
-
 
             viewHolder.titleBook.setVisibility(View.INVISIBLE);
             viewHolder.authorBook.setText("Delete Book ?");
@@ -271,10 +272,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
     }
 
+
     public void remove(int position) {
         Book rbook = bookList.get(position);
         removeBook(rbook.getId(), position);
     }
+
 
     public void removeBook(final String bookId, final int position) {
 
@@ -357,7 +360,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public void onDestroyActionMode(ActionMode mode) {
             reset();
             mActionMode = null;
-            is_selection=false;
         }
     };
 
