@@ -138,28 +138,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         final ViewHolder viewHolder = holder;
         final Book rbook = bookList.get(position);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(is_selection)
-                    viewHolder.itemView.performLongClick();
-            }
-        });
-
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
-                //This line activates the contextual action bar
-                //mActionMode = activity.startActionMode(mActionModeCallback);
-
-
-                //selected.put(position, true);
+                is_selection=true;
 
                 selected.put(position, !rbook.isSelected());
-
-                // additional
-
                 rbook.setSelected(!rbook.isSelected());
 
                 if(rbook.isSelected())
@@ -168,24 +153,30 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     ctr--;
                     if(ctr==0)
                     {
+                        //is_selection=false;
                         mActionMode.finish();
                     }
                 }
 
-                if(ctr>0)
+                if(ctr>0) {
+                    //This line activates the contextual action bar
                     mActionMode = activity.startActionMode(mActionModeCallback);
-
-
-                //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
-
-                //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(rbook.isSelected() ? R.color.delete_gray: R.color.White));
+                }
 
                 viewHolder.itemView.setBackgroundColor(rbook.isSelected() ? Color.LTGRAY : Color.WHITE);
-
-
-                is_selection=true;
-
                 return false;
+            }
+        });
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /*
+                if(is_selection)
+                    viewHolder.itemView.performLongClick();
+                */
+                
             }
         });
 
@@ -366,6 +357,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public void onDestroyActionMode(ActionMode mode) {
             reset();
             mActionMode = null;
+            is_selection=false;
         }
     };
 
