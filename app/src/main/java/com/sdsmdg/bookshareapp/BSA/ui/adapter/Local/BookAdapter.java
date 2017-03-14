@@ -50,6 +50,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private static final String TAG = BookAdapter.class.getSimpleName();
     private int ctr=0;
 
+    //to check if a long press had been already made
+    private boolean is_selection=false;
+
     private static final int PENDING_REMOVAL_TIMEOUT = 1500;
     Book tempValues = null;
     List<Book> itemsPendingRemoval;
@@ -135,6 +138,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         final ViewHolder viewHolder = holder;
         final Book rbook = bookList.get(position);
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(is_selection)
+                    viewHolder.itemView.performLongClick();
+            }
+        });
+
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -170,6 +181,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 //viewHolder.itemView.setBackgroundColor(context.getResources().getColor(rbook.isSelected() ? R.color.delete_gray: R.color.White));
 
                 viewHolder.itemView.setBackgroundColor(rbook.isSelected() ? Color.LTGRAY : Color.WHITE);
+
+
+                is_selection=true;
 
                 return false;
             }
