@@ -50,6 +50,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private static final String TAG = BookAdapter.class.getSimpleName();
     private int ctr=0;
 
+    private int current;
+
     //to check if a long press had been already made
     private boolean is_selection=false;
 
@@ -206,10 +208,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             viewHolder.itemView.setBackgroundColor(Color.WHITE);
 
             //if the book is selected, change it's color to holo blue light
-            //if (selected.get(position)) {
-            //    viewHolder.itemView.setBackgroundColor(context.getResources().getColor(R.color.delete_gray));
-            //}
-
             if(rbook.isSelected()){
                 viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
             }
@@ -260,6 +258,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     //This function is used to delete the selected items
     public void deleteSelectedItem() {
+
         for (int i = 0; i < bookList.size(); i++) {
 
             /*
@@ -269,8 +268,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             */
 
             Book book = bookList.get(i);
-            if(book.isSelected())
-              remove(i);
+            if(book.isSelected()) {
+                remove(i);
+                current=i;
+                break;
+            }
 
         }
     }
@@ -300,6 +302,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     ((MyProfile)context).onBookRemoved();
                     Log.i(TAG, "onResponse: 1");
                     Toast.makeText(context, "Successfully removed", Toast.LENGTH_SHORT).show();
+
                     Book rbook = bookList.get(position);
                     if (itemsPendingRemoval.contains(rbook)) {
                         itemsPendingRemoval.remove(rbook);
@@ -308,20 +311,28 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                         bookList.remove(position);
                         notifyItemRemoved(position);
                     }
+
+                    for(int i=current; i<bookList.size(); ++i)
+                    {
+                        Book book=bookList.get(i);
+
+                        if(book.isSelected())
+                        {
+                            current=i;
+                            remove(i);
+                            break;
+                        }
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Detail> call, Throwable t)
             {
-                /*
-
                 itemsPendingRemoval.remove(bookList.get(position));
                 //This line will remove the undo button and show the book row completely
                 notifyItemChanged(position);
                 Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_SHORT).show();
-
-                */
             }
         });
     }
