@@ -173,7 +173,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         if (itemsPendingRemoval.contains(rbook)) {
             // we need to show the "undo" state of the row
 
-            viewHolder.itemView.setBackgroundColor(Color.MAGENTA);
+            viewHolder.itemView.setBackgroundColor(Color.RED);
 
             viewHolder.titleBook.setVisibility(View.INVISIBLE);
             viewHolder.authorBook.setText("Delete Book ?");
